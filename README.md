@@ -1,36 +1,213 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HRIS - PERUSAHAAN ARSITEK DAN KONTRAKTOR
 
-## Getting Started
+Sistem HRIS internal untuk manajemen karyawan, absensi, payroll, material, dan proyek.
 
-First, run the development server:
+Project ini dibuat untuk mendukung operasional perusahaan konsultan arsitektur, kontraktor bangunan, dan interior.
 
-```bash
+---
+
+# Tech Stack
+
+Frontend
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+
+Backend
+- Next.js API Route
+
+Database
+- PostgreSQL
+- Supabase
+
+Icons
+- Lucide React
+
+Font
+- Plus Jakarta Sans
+
+---
+
+# Cara Menjalankan Project
+
+Install dependencies
+
+npm install
+
+Run development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka di browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# Struktur Project
 
-To learn more about Next.js, take a look at the following resources:
+app/
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+dashboard/
+karyawan/
+absensi/
+cuti/
+payroll/
+material/
+vendor/
+proyek/
+laporan/
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+login/
 
-## Deploy on Vercel
+api/
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+components/
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ui/
+button.tsx
+input.tsx
+card.tsx
+table.tsx
+container.tsx
+page-title.tsx
+
+layout/
+sidebar.tsx
+header.tsx
+
+lib/
+
+db.ts
+auth.ts
+
+public/
+
+logo.webp
+login-bg.webp
+
+---
+
+# Modul Sistem
+
+Dashboard  
+Karyawan  
+Absensi  
+Cuti  
+Payroll  
+Material Request  
+Vendor / Supplier  
+Proyek  
+Laporan  
+
+---
+
+# Sistem Login
+
+Endpoint
+
+POST /api/login
+
+Login dapat menggunakan
+
+Email  
+Username  
+
+Session disimpan di
+
+localStorage
+
+---
+
+# Brand Design System
+
+Brand color digunakan melalui CSS variable.
+
+File
+
+app/globals.css
+:root {
+
+--brand-orange:#f97316;
+--brand-red:#dc2626;
+--brand-dark:#252525;
+
+--ui-bg:#f8fafc;
+--ui-border:#e5e7eb;
+--ui-text:#111827;
+
+}
+
+
+Penggunaan di Tailwind
+
+text-(--brand-dark)  
+bg-(--brand-orange)  
+bg-(--brand-red)
+
+---
+
+# UI Component System
+
+Semua UI harus menggunakan reusable component.
+
+Button  
+components/ui/button.tsx
+
+Input  
+components/ui/input.tsx
+
+Card  
+components/ui/card.tsx
+
+Table  
+components/ui/table.tsx
+
+Page Title  
+components/ui/page-title.tsx
+
+Container  
+components/ui/container.tsx
+
+Jangan membuat UI langsung di page.
+
+---
+
+# Authentication
+
+User login menggunakan
+
+email / username  
+password  
+
+Password disimpan menggunakan hashing.
+
+---
+
+# Deployment
+
+Project dapat di deploy ke
+
+Vercel  
+Railway  
+VPS  
+
+Database menggunakan Supabase PostgreSQL.
+
+---
+
+# Tujuan Sistem
+
+Menyatukan seluruh operasional perusahaan dalam satu sistem.
+
+Manajemen karyawan  
+Manajemen absensi  
+Manajemen payroll  
+Manajemen proyek  
+Manajemen material  
+
+---
+
+# Author
+
+ArsitekInterior.com
