@@ -8,32 +8,50 @@ type KaryawanRow = {
   status_karyawan: string
   role: {
     nama_role: string
-  } | null
+  }[] | null
 }
 
 export async function GET(){
 
-  const { data } = await supabase
-    .from("karyawan")
-    .select(`
-      id,
-      nama_lengkap,
-      email,
-      status_karyawan,
-      role:role_id (
-        nama_role
-      )
-    `)
-    .order("created_at",{ ascending:false })
+try{
 
-  const result = (data as KaryawanRow[] | null)?.map((k)=>({
-    id:k.id,
-    nama_lengkap:k.nama_lengkap,
-    email:k.email,
-    status_karyawan:k.status_karyawan,
-    nama_role:k.role?.nama_role ?? "-"
-  }))
+const { data, error } = await supabase
+.from("karyawan")
+.select(`
+  id,
+  nama_lengkap,
+  email,
+  status_karyawan,
+  role:role_id (
+    nama_role
+  )
+`)
+.order("created_at",{ ascending:false })
 
-  return NextResponse.json(result)
+if(error){
+return NextResponse.json(
+{ error:error.message },
+{ status:500 }
+)
+}
+
+const result = (data as KaryawanRow[] | null)?.map((k)=>({
+id:k.id,
+nama_lengkap:k.nama_lengkap,
+email:k.email,
+status_karyawan:k.status_karyawan,
+nama_role:k.role?.[0]?.nama_role ?? "-"
+})) ?? []
+
+return NextResponse.json(result)
+
+}catch{
+
+return NextResponse.json(
+{ error:"Internal Server Error" },
+{ status:500 }
+)
+
+}
 
 }
