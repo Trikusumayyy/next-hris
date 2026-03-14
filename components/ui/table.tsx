@@ -47,12 +47,13 @@ export default function DataTable<T>({
 
       <div className="flex justify-between items-center">
         <div className="w-75">
-          <Input
+          <Input className="border-gray-500"
             placeholder="Search..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value)
               setPage(1)
+              
             }}
           />
         </div>

@@ -9,7 +9,7 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "HRIS",
+  title: "HRIS - Management System",
   description: "Sistem HRIS ArsitekInterior",
 }
 

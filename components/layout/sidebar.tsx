@@ -7,82 +7,25 @@ import { usePathname } from "next/navigation"
 import {
   LayoutDashboard,
   Users,
-  CalendarCheck,
   Clock,
+  CalendarCheck,
   Wallet,
-  Package,
   FolderKanban,
+  Package,
   Truck,
+  Calculator,
   FileText,
   Menu,
-  Calculator
+  ChevronDown
 } from "lucide-react"
 
 import { LucideIcon } from "lucide-react"
 
 
 
-function MenuItem({
-  href,
-  icon: Icon,
-  label,
-  open,
-  pathname
-}: {
-  href: string
-  icon: LucideIcon
-  label: string
-  open: boolean
-  pathname: string
-}) {
-
-  const active = pathname.startsWith(href)
-
-  return (
-    <Link
-      href={href}
-      className={`
-      relative flex items-center gap-3 px-3 py-2 rounded-lg
-      transition-all duration-200 group
-      ${active
-        ? "bg-white text-black shadow-sm"
-        : "text-gray-400 hover:text-white hover:bg-gray-800"
-      }
-      `}
-    >
-
-      {/* active indicator */}
-      {active && (
-        <span className="absolute left-0 top-0 h-full w-1 bg-orange-500 rounded-r"></span>
-      )}
-
-      <Icon size={20} className="shrink-0" />
-
-      {open && (
-        <span className="text-sm font-medium truncate">
-          {label}
-        </span>
-      )}
-
-      {/* tooltip when collapsed */}
-      {!open && (
-        <span
-          className="
-          absolute left-16 whitespace-nowrap
-          bg-gray-900 text-white text-xs px-2 py-1 rounded
-          opacity-0 group-hover:opacity-100
-          transition pointer-events-none
-          "
-        >
-          {label}
-        </span>
-      )}
-
-    </Link>
-  )
-}
-
-
+/* =========================
+   CATEGORY TITLE
+========================= */
 
 function Category({
   title,
@@ -102,6 +45,111 @@ function Category({
 }
 
 
+
+/* =========================
+   SUB MENU ITEM
+========================= */
+
+function SubMenuItem({
+  href,
+  label,
+  pathname
+}: {
+  href: string
+  label: string
+  pathname: string
+}) {
+
+  const active = pathname.startsWith(href)
+
+  return (
+    <Link
+      href={href}
+      className={`
+      relative px-2 py-1 rounded text-sm
+      transition
+      ${active
+        ? "text-white font-medium"
+        : "text-gray-400 hover:text-white"}
+      `}
+    >
+
+      {active && (
+        <span className="absolute -left-3 top-0 h-full w-1 bg-orange-500 rounded-r"></span>
+      )}
+
+      {label}
+
+    </Link>
+  )
+}
+
+
+
+/* =========================
+   DROPDOWN MENU
+========================= */
+
+function DropdownMenu({
+  icon: Icon,
+  label,
+  open,
+  children
+}: {
+  icon: LucideIcon
+  label: string
+  open: boolean
+  children: React.ReactNode
+}) {
+
+  const [expand, setExpand] = useState(false)
+
+  return (
+    <div>
+
+      <button
+        onClick={() => setExpand(!expand)}
+        className="
+        flex items-center gap-3 px-3 py-2 rounded-lg
+        text-gray-400 hover:text-white hover:bg-gray-800
+        w-full transition
+        "
+      >
+
+        <Icon size={20} />
+
+        {open && (
+          <>
+            <span className="flex-1 text-left text-sm font-medium">
+              {label}
+            </span>
+
+            <ChevronDown
+              size={16}
+              className={`transition ${expand ? "rotate-180" : ""}`}
+            />
+          </>
+        )}
+
+      </button>
+
+      {expand && open && (
+        <div className="ml-8 mt-1 flex flex-col gap-1">
+
+          {children}
+
+        </div>
+      )}
+
+    </div>
+  )
+}
+
+
+
+/* =========================
+   SIDEBAR
+========================= */
 
 export default function Sidebar() {
 
@@ -144,97 +192,157 @@ export default function Sidebar() {
 
         <Category title="Dashboard" open={open} />
 
-        <MenuItem
-          href="/dashboard"
+        <DropdownMenu
           icon={LayoutDashboard}
           label="Dashboard"
           open={open}
-          pathname={pathname}
-        />
+        >
+
+          <SubMenuItem
+            href="/dashboard"
+            label="Dashboard"
+            pathname={pathname}
+          />
+
+        </DropdownMenu>
 
 
 
         <Category title="Human Resource" open={open} />
 
-        <MenuItem
-          href="/karyawan"
+
+        <DropdownMenu
           icon={Users}
           label="Karyawan"
           open={open}
-          pathname={pathname}
-        />
+        >
 
-        <MenuItem
-          href="/absensi"
+          <SubMenuItem href="/karyawan" label="Semua Karyawan" pathname={pathname} />
+          <SubMenuItem href="/karyawan/tambah" label="Tambah Karyawan" pathname={pathname} />
+          <SubMenuItem href="/karyawan/divisi" label="Divisi" pathname={pathname} />
+          <SubMenuItem href="/karyawan/jabatan" label="Jabatan / Role" pathname={pathname} />
+          <SubMenuItem href="/karyawan/status" label="Status Karyawan" pathname={pathname} />
+          <SubMenuItem href="/karyawan/dokumen" label="Dokumen Karyawan" pathname={pathname} />
+
+        </DropdownMenu>
+
+
+
+        <DropdownMenu
           icon={Clock}
           label="Absensi"
           open={open}
-          pathname={pathname}
-        />
+        >
 
-        <MenuItem
-          href="/cuti"
+          <SubMenuItem href="/absensi" label="Absensi Hari Ini" pathname={pathname} />
+          <SubMenuItem href="/absensi/riwayat" label="Riwayat Absensi" pathname={pathname} />
+          <SubMenuItem href="/absensi/rekap" label="Rekap Bulanan" pathname={pathname} />
+          <SubMenuItem href="/absensi/izin" label="Izin / Sakit" pathname={pathname} />
+          <SubMenuItem href="/absensi/shift" label="Pengaturan Shift" pathname={pathname} />
+
+        </DropdownMenu>
+
+
+
+        <DropdownMenu
           icon={CalendarCheck}
           label="Cuti"
           open={open}
-          pathname={pathname}
-        />
+        >
 
-        <MenuItem
-          href="/payroll"
+          <SubMenuItem href="/cuti" label="Pengajuan Cuti" pathname={pathname} />
+          <SubMenuItem href="/cuti/approval" label="Approval Cuti" pathname={pathname} />
+          <SubMenuItem href="/cuti/riwayat" label="Riwayat Cuti" pathname={pathname} />
+
+        </DropdownMenu>
+
+
+
+        <DropdownMenu
           icon={Wallet}
           label="Payroll"
           open={open}
-          pathname={pathname}
-        />
+        >
+
+          <SubMenuItem href="/payroll" label="Generate Gaji" pathname={pathname} />
+          <SubMenuItem href="/payroll/slip" label="Slip Gaji" pathname={pathname} />
+          <SubMenuItem href="/payroll/komponen" label="Komponen Gaji" pathname={pathname} />
+
+        </DropdownMenu>
 
 
 
         <Category title="Project" open={open} />
 
-        <MenuItem
-          href="/proyek"
+
+        <DropdownMenu
           icon={FolderKanban}
           label="Proyek"
           open={open}
-          pathname={pathname}
-        />
+        >
 
-        <MenuItem
-          href="/material"
+          <SubMenuItem href="/proyek" label="Semua Proyek" pathname={pathname} />
+          <SubMenuItem href="/proyek/tambah" label="Tambah Proyek" pathname={pathname} />
+          <SubMenuItem href="/proyek/progress" label="Progress Proyek" pathname={pathname} />
+
+        </DropdownMenu>
+
+
+
+        <DropdownMenu
           icon={Package}
           label="Material"
           open={open}
-          pathname={pathname}
-        />
+        >
 
-        <MenuItem
-          href="/vendor"
+          <SubMenuItem href="/material" label="Stok Material" pathname={pathname} />
+          <SubMenuItem href="/material/request" label="Request Material" pathname={pathname} />
+          <SubMenuItem href="/material/laporan" label="Laporan Material" pathname={pathname} />
+
+        </DropdownMenu>
+
+
+
+        <DropdownMenu
           icon={Truck}
           label="Vendor"
           open={open}
-          pathname={pathname}
-        />
+        >
 
-        <MenuItem
-          href="/rab"
+          <SubMenuItem href="/vendor" label="Semua Vendor" pathname={pathname} />
+          <SubMenuItem href="/vendor/tambah" label="Tambah Vendor" pathname={pathname} />
+
+        </DropdownMenu>
+
+
+
+        <DropdownMenu
           icon={Calculator}
           label="Rencana Anggaran Biaya"
           open={open}
-          pathname={pathname}
-        />
+        >
+
+          <SubMenuItem href="/rab" label="Daftar RAB" pathname={pathname} />
+          <SubMenuItem href="/rab/buat" label="Buat RAB" pathname={pathname} />
+
+        </DropdownMenu>
 
 
 
         <Category title="Report" open={open} />
 
-        <MenuItem
-          href="/laporan"
+
+        <DropdownMenu
           icon={FileText}
           label="Laporan"
           open={open}
-          pathname={pathname}
-        />
+        >
+
+          <SubMenuItem href="/laporan" label="Semua Laporan" pathname={pathname} />
+          <SubMenuItem href="/laporan/absensi" label="Laporan Absensi" pathname={pathname} />
+          <SubMenuItem href="/laporan/payroll" label="Laporan Payroll" pathname={pathname} />
+
+        </DropdownMenu>
 
       </div>
 
